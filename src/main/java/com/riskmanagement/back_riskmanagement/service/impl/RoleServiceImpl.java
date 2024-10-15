@@ -1,18 +1,13 @@
 package com.riskmanagement.back_riskmanagement.service.impl;
 
 import com.riskmanagement.back_riskmanagement.dto.model.Role;
-import com.riskmanagement.back_riskmanagement.dto.model.User;
 import com.riskmanagement.back_riskmanagement.entity.RoleEntity;
-import com.riskmanagement.back_riskmanagement.entity.UserEntity;
 import com.riskmanagement.back_riskmanagement.exception.codes.ExceptionCodesRiskManagementDatabase;
 import com.riskmanagement.back_riskmanagement.exception.riskmanagement.RoleException;
 import com.riskmanagement.back_riskmanagement.repository.RoleRepository;
 import com.riskmanagement.back_riskmanagement.service.interfaces.RoleService;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,11 +18,11 @@ public class RoleServiceImpl implements RoleService {
     private final RoleRepository roleRepository;
 
     @Override
-    @Transactional
     public List<Role> findAll() {
         if (roleRepository.findAll().isEmpty()) {
             return List.of();
         }
+
         return roleRepository
                 .findAll()
                 .stream()
@@ -43,7 +38,6 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    @Transactional
     public Role create(Role role) {
         RoleEntity roleEntity = roleRepository.save(Role.toEntity(role));
         return Role.fromEntity(roleEntity);

@@ -7,7 +7,6 @@ import com.riskmanagement.back_riskmanagement.dto.response.RoleResponse;
 import com.riskmanagement.back_riskmanagement.exception.codes.ExceptionCodesRiskManagementDatabase;
 import com.riskmanagement.back_riskmanagement.exception.riskmanagement.RoleException;
 import com.riskmanagement.back_riskmanagement.service.interfaces.RoleService;
-import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -37,7 +36,9 @@ public class RoleController {
 
             return ResponseEntity.ok(roles);
         }catch (Exception e){
-            throw new RoleException(ExceptionCodesRiskManagementDatabase.DB_RISK_MANAGEMENT_013, e.getMessage());
+            throw new RoleException(
+                    ExceptionCodesRiskManagementDatabase.DB_RISK_MANAGEMENT_013, e.getMessage()
+            );
         }
     }
 
