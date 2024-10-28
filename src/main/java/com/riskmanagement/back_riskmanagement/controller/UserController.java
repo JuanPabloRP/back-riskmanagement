@@ -20,7 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UserController {
-    public static final String USER_URI = "/api/v1/user";
+    public static final String USER_URI = "/api/v1/users";
 
     @Autowired
     UserService userService;

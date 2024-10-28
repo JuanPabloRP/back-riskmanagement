@@ -21,7 +21,7 @@ import java.util.List;
 @ControllerAdvice
 @RequiredArgsConstructor
 public class RoleController {
-    public static final String ROLE_URI = "/api/v1/role";
+    public static final String ROLE_URI = "/api/v1/roles";
 
     @Autowired
     RoleService roleService;
