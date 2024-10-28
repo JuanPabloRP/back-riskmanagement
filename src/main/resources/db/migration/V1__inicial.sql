@@ -1,3 +1,5 @@
+-- Versión 1 de la Base de Datos sin la tabla permissions y sus relaciones
+
 -- Tabla role
 CREATE TABLE role (
 	role_id SERIAL NOT NULL UNIQUE,
@@ -8,22 +10,11 @@ CREATE TABLE role (
 	PRIMARY KEY(role_id)
 );
 
--- Tabla permission
-CREATE TABLE permission (
-	permission_id SERIAL NOT NULL UNIQUE,
-	permission_name VARCHAR NOT NULL,
-	description VARCHAR,
-	PRIMARY KEY(permission_id)
-);
-
--- Tabla intermedia role_permission (relación entre roles y permisos)
-CREATE TABLE role_permission (
-	role_permission_id SERIAL NOT NULL UNIQUE,
-	role_id INTEGER NOT NULL,
-	permission_id INTEGER NOT NULL,
-	PRIMARY KEY(role_permission_id),
-	FOREIGN KEY(role_id) REFERENCES role(role_id),
-	FOREIGN KEY(permission_id) REFERENCES permission(permission_id)
+-- Tabla status (Estado de aprobación de usuario)
+CREATE TABLE status (
+	status_id SERIAL NOT NULL PRIMARY KEY,
+	status_name VARCHAR(50) NOT NULL UNIQUE,
+	description VARCHAR
 );
 
 -- Tabla user_information
@@ -31,12 +22,29 @@ CREATE TABLE user_information (
 	user_id SERIAL NOT NULL UNIQUE,
 	role_id INTEGER NOT NULL,
 	name VARCHAR NOT NULL,
-	password VARCHAR NOT NULL,
+	password VARCHAR NOT NULL,  -- Contraseña almacenada como hash
+	status_id INTEGER NOT NULL,  -- Estado de aprobación
 	active BOOLEAN NOT NULL DEFAULT TRUE,
 	creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	modification_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY(user_id),
-	FOREIGN KEY(role_id) REFERENCES role(role_id)
+	FOREIGN KEY(role_id) REFERENCES role(role_id),
+	FOREIGN KEY(status_id) REFERENCES status(status_id)
+);
+
+-- Tabla user_information_history para auditoría de cambios
+CREATE TABLE user_information_history (
+	history_id SERIAL PRIMARY KEY,
+	user_id INTEGER NOT NULL,
+	role_id INTEGER,
+	name VARCHAR,
+	status_id INTEGER,
+	active BOOLEAN,
+	action VARCHAR(50) NOT NULL,  -- "INSERT", "UPDATE", "DELETE"
+	action_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	modified_by INTEGER,
+	FOREIGN KEY(user_id) REFERENCES user_information(user_id),
+	FOREIGN KEY(modified_by) REFERENCES user_information(user_id)
 );
 
 -- Tabla asset
@@ -54,19 +62,26 @@ CREATE TABLE asset (
 	FOREIGN KEY(user_id) REFERENCES user_information(user_id)
 );
 
+-- Tabla impact_level (Para niveles de impacto en risk)
+CREATE TABLE impact_level (
+	impact_id SERIAL PRIMARY KEY,
+	impact_value VARCHAR(50) NOT NULL UNIQUE
+);
+
 -- Tabla risk
 CREATE TABLE risk (
 	risk_id SERIAL NOT NULL UNIQUE,
 	user_id INTEGER NOT NULL,
 	risk_name VARCHAR NOT NULL,
 	risk_description VARCHAR NOT NULL,
-	impact VARCHAR NOT NULL,
+	impact_id INTEGER,
 	probability VARCHAR NOT NULL,
 	active BOOLEAN NOT NULL DEFAULT TRUE,
 	creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	modification_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY(risk_id),
-	FOREIGN KEY(user_id) REFERENCES user_information(user_id)
+	FOREIGN KEY(user_id) REFERENCES user_information(user_id),
+	FOREIGN KEY(impact_id) REFERENCES impact_level(impact_id)
 );
 
 -- Tabla vulnerability
@@ -173,3 +188,29 @@ CREATE TABLE risk_plan (
 	FOREIGN KEY(risk_id) REFERENCES risk(risk_id),
 	FOREIGN KEY(plan_id) REFERENCES treatment_plan(plan_id)
 );
+
+-- Tabla settings para configuraciones globales
+CREATE TABLE settings (
+	setting_id SERIAL PRIMARY KEY,
+	setting_key VARCHAR(100) UNIQUE NOT NULL,
+	setting_value VARCHAR(255) NOT NULL
+);
+
+-- Índices adicionales
+CREATE INDEX idx_user_status ON user_information(status_id);
+CREATE INDEX idx_asset_user ON asset(user_id);
+CREATE INDEX idx_risk_user ON risk(user_id);
+
+-- Trigger para actualizar modification_date en user_information
+CREATE OR REPLACE FUNCTION update_modification_date()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.modification_date = CURRENT_TIMESTAMP;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER set_modification_date
+BEFORE UPDATE ON user_information
+FOR EACH ROW
+EXECUTE FUNCTION update_modification_date();
