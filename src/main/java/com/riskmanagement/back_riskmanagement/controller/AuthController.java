@@ -1,11 +1,11 @@
 package com.riskmanagement.back_riskmanagement.controller;
 
+import com.riskmanagement.back_riskmanagement.dto.request.UserRequest;
+import com.riskmanagement.back_riskmanagement.dto.response.UserResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.riskmanagement.back_riskmanagement.service.interfaces.AuthService;
 
@@ -21,7 +21,7 @@ public class AuthController {
     AuthService authService;
 
     @PostMapping(value = "/signup")
-    public String signup (){
-        return"HOLA";
+    public UserResponse signup (@RequestBody UserRequest userRequest){
+        return UserResponse.fromUser(authService.signup(userRequest));
     }
 }

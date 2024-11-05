@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "user_information")
 @Getter
@@ -23,9 +25,23 @@ public class UserEntity extends BaseEntity {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "identification")
+    private String identification;
+
+    @Column(name = "birthDate")
+    private Date birthDate;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "role_id", referencedColumnName = "role_id")
+    private RoleEntity roleId;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "status_id", referencedColumnName = "status_id")
+    private RoleEntity statusId;
 
 
-    /*@Column(name = "identification")
-    @NotBlank(message = "Ingrese la identificación")
-    private String identification;*/
+
 }

@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,12 +17,23 @@ import lombok.NoArgsConstructor;
 public class User {
     private String id;
     private String name;
+    private String email;
+    private String password;
+    private String identification;
+    private Date birthDate;
+    private Integer roleId;
+    private Integer statusId;
 
     public static User fromEntity(UserEntity userEntity){
         return User
                 .builder()
                 .id(userEntity.getUserId().toString())
                 .name(userEntity.getName())
+                .email(userEntity.getEmail())
+                .roleId(userEntity.getRoleId())
+                .birthDate(userEntity.getBirthDate())
+                .identification(userEntity.getIdentification())
+                .statusId(userEntity.getStatusId())
                 .build();
     }
 
@@ -28,14 +41,27 @@ public class User {
         return UserEntity
                 .builder()
                 .name(user.getName())
+                .email(user.getEmail())
+                .roleId(user.getRoleId())
+                .birthDate(user.getBirthDate())
+                .identification(user.getIdentification())
+                .password(user.getPassword())
+                .statusId(user.getStatusId())
                 .build();
     }
 
     public static User fromUserRequest(UserRequest userRequest){
         return User
                 .builder()
-                .name(userRequest.getName())
+                .name(userRequest.getFirstName()+userRequest.getLastName())
+                .email(userRequest.getEmail())
+                .roleId(userRequest.getRoleId())
+                .birthDate(userRequest.getBirthDate())
+                .identification(userRequest.getIdentification())
+                .password(userRequest.getPassword())
+                .statusId(userRequest.getStatusId())
                 .build();
+
     }
 
 
