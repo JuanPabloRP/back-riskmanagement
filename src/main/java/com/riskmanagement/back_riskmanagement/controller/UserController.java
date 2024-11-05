@@ -20,7 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UserController {
-    public static final String USER_URI = "/api/v1/users";
+    public static final String USER_URI = "/api/v1/user";
 
     @Autowired
     UserService userService;
@@ -50,16 +50,7 @@ public class UserController {
         }
     }
 
-    @PostMapping()
-    public ResponseEntity<UserResponse> createUserResponseEntity(@RequestBody UserRequest userRequest){
-        try{
-            User user = userService.create(User.fromUserRequest(userRequest));
-            UserResponse userResponse = UserResponse.fromUser(user);
-            return ResponseEntity.ok(userResponse);
-        }catch (UserException e){
-            throw new UserException(ExceptionCodesRiskManagementDatabase.DB_RISK_MANAGEMENT_008, e.getMessage());
-        }
-    }
+    
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<UserResponse> updateUser(@PathVariable Integer id, @RequestBody UserRequest userRequest){
