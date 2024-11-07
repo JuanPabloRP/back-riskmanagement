@@ -2,20 +2,23 @@ package com.riskmanagement.back_riskmanagement.dto.model;
 
 
 import com.riskmanagement.back_riskmanagement.dto.request.UserRequest;
+import com.riskmanagement.back_riskmanagement.dto.response.UserResponse;
+import com.riskmanagement.back_riskmanagement.entity.RoleEntity;
+import com.riskmanagement.back_riskmanagement.entity.StatusEntity;
 import com.riskmanagement.back_riskmanagement.entity.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.sql.Date;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
 public class User {
-    private String id;
+    private Integer id;
     private String name;
     private String email;
     private String password;
@@ -24,45 +27,58 @@ public class User {
     private Integer roleId;
     private Integer statusId;
 
-    public static User fromEntity(UserEntity userEntity){
-        return User
-                .builder()
-                .id(userEntity.getUserId().toString())
-                .name(userEntity.getName())
-                .email(userEntity.getEmail())
-                .roleId(userEntity.getRoleId())
-                .birthDate(userEntity.getBirthDate())
-                .identification(userEntity.getIdentification())
-                .statusId(userEntity.getStatusId())
+    // De UserRequest a User
+    public static User toModel(UserRequest request) {
+        return User.builder()
+                .name(request.getFirstName()+request.getLastName())
+                .password(request.getPassword())
+                .email(request.getEmail())
+                .identification(request.getIdentification())
+                .birthDate(request.getBirthDate())
+                .roleId(request.getRoleId())
+                .statusId(request.getStatusId())
                 .build();
     }
 
-    public static UserEntity toEntity(User user){
-        return UserEntity
-                .builder()
-                .name(user.getName())
-                .email(user.getEmail())
-                .roleId(user.getRoleId())
-                .birthDate(user.getBirthDate())
-                .identification(user.getIdentification())
-                .password(user.getPassword())
-                .statusId(user.getStatusId())
+    // De UserEntity a User
+    public static User toModel(UserEntity entity) {
+        return User.builder()
+                .id(entity.getUserId())
+                .name(entity.getName())
+                .password(entity.getPassword())
+                .email(entity.getEmail())
+                .identification(entity.getIdentification())
+                .birthDate(entity.getBirthDate())
+                .roleId(entity.getRoleId().getRoleId())
+                .statusId(entity.getStatusId().getStatusId())
                 .build();
     }
 
-    public static User fromUserRequest(UserRequest userRequest){
-        return User
-                .builder()
-                .name(userRequest.getFirstName()+userRequest.getLastName())
-                .email(userRequest.getEmail())
-                .roleId(userRequest.getRoleId())
-                .birthDate(userRequest.getBirthDate())
-                .identification(userRequest.getIdentification())
-                .password(userRequest.getPassword())
-                .statusId(userRequest.getStatusId())
+    // De User a UserEntity
+    public static UserEntity toEntity(User model, RoleEntity role, StatusEntity status) {
+        return UserEntity.builder()
+                .name(model.getName())
+                .password(model.getPassword())
+                .email(model.getEmail())
+                .identification(model.getIdentification())
+                .birthDate(model.getBirthDate())
+                .roleId(role)
+                .statusId(status)
                 .build();
-
     }
 
-
+    // De User a UserResponse
+    public static UserResponse toResponse(User model, String roleName, String statusName) {
+        return UserResponse.builder()
+                .id(model.getId())
+                .name(model.getName())
+                .email(model.getEmail())
+                .identification(model.getIdentification())
+                .birthDate(model.getBirthDate())
+                .roleId(model.getRoleId())
+                .roleName(roleName)
+                .statusId(model.getStatusId())
+                .statusName(statusName)
+                .build();
+    }
 }

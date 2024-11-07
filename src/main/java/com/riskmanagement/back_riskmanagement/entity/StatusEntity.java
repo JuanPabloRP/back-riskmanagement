@@ -1,15 +1,14 @@
 package com.riskmanagement.back_riskmanagement.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "status")
 @Getter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class StatusEntity extends BaseEntity {
     @Id
     @Column(name = "status_id")

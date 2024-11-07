@@ -22,6 +22,6 @@ public class AuthController {
 
     @PostMapping(value = "/signup")
     public UserResponse signup (@RequestBody UserRequest userRequest){
-        return UserResponse.fromUser(authService.signup(userRequest));
+        return authService.signup(userRequest);
     }
 }

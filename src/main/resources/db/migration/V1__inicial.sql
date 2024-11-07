@@ -124,12 +124,15 @@ CREATE TABLE control (
 	control_name VARCHAR NOT NULL,
 	control_type VARCHAR NOT NULL,
 	control_description VARCHAR NOT NULL,
+	status_id INTEGER,
 	active BOOLEAN NOT NULL DEFAULT TRUE,
 	creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	modification_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY(control_id),
-	FOREIGN KEY(user_id) REFERENCES user_information(user_id)
+	FOREIGN KEY(user_id) REFERENCES user_information(user_id),
+	FOREIGN KEY(status_id) REFERENCES status(status_id)
 );
+
 
 -- Tabla treatment_plan
 CREATE TABLE treatment_plan (

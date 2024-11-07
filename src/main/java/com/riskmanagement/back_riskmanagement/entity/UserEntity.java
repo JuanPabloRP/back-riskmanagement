@@ -1,13 +1,10 @@
 package com.riskmanagement.back_riskmanagement.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.sql.Date;
 
 @Entity
 @Table(name = "user_information")
@@ -40,8 +37,6 @@ public class UserEntity extends BaseEntity {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "status_id", referencedColumnName = "status_id")
-    private RoleEntity statusId;
-
-
+    private StatusEntity statusId;
 
 }
