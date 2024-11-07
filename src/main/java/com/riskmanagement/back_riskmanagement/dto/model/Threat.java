@@ -1,11 +1,13 @@
 package com.riskmanagement.back_riskmanagement.dto.model;
 
+
 import com.riskmanagement.back_riskmanagement.entity.ThreatEntity;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.time.LocalDate;
 
 
@@ -14,9 +16,16 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder(toBuilder = true)
 public class Threat {
+
     private Integer id;
     private Integer userId;
+
+    @NotNull(message = "Name is required")
+    @Size(min = 1, max = 255, message = "Name must be between 1 and 255 characters")
     private String name;
+
+    @NotNull(message = "Description is required")
+    @Size(min = 1, max = 500, message = "Description must be between 1 and 500 characters")
     private String description;
     private String type;
     private boolean active;
