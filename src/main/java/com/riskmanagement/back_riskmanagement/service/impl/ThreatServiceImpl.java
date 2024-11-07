@@ -39,8 +39,12 @@ public class ThreatServiceImpl implements ThreatService {
 
     @Override
     public Threat create(Threat threat) {
-        ThreatEntity threatEntity = threatRepository.save(Threat.toEntity(threat));
-        return Threat.fromEntity(threatEntity);
+        try {
+            ThreatEntity threatEntity = threatRepository.save(Threat.toEntity(threat));
+            return Threat.fromEntity(threatEntity);
+        } catch (Exception e) {
+            throw new ThreatException(ExceptionCodesRiskManagementDatabase.DB_RISK_MANAGEMENT_014, e.getMessage());
+        }
     }
 
     @Override
