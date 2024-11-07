@@ -24,7 +24,7 @@ public class UserController {
 
     @Autowired
     UserService userService;
-
+    /*
     @GetMapping()
     public ResponseEntity<List<UserResponse>> getAllUsers() {
         try{
@@ -50,8 +50,6 @@ public class UserController {
         }
     }
 
-    
-
     @PutMapping(value = "/{id}")
     public ResponseEntity<UserResponse> updateUser(@PathVariable Integer id, @RequestBody UserRequest userRequest){
         try{
@@ -73,5 +71,5 @@ public class UserController {
             throw new UserException(ExceptionCodesRiskManagementDatabase.DB_RISK_MANAGEMENT_010, e.getMessage());
         }
     }
-
+    */
 }

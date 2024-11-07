@@ -5,6 +5,7 @@ import com.riskmanagement.back_riskmanagement.dto.response.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.riskmanagement.back_riskmanagement.service.interfaces.AuthService;
@@ -21,7 +22,7 @@ public class AuthController {
     AuthService authService;
 
     @PostMapping(value = "/signup")
-    public UserResponse signup (@RequestBody UserRequest userRequest){
-        return authService.signup(userRequest);
+    public ResponseEntity<UserResponse> signup (@RequestBody UserRequest userRequest){
+        return ResponseEntity.ok(authService.signup(userRequest));
     }
 }
