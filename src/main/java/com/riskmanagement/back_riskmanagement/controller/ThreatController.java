@@ -41,6 +41,21 @@ public class ThreatController {
         }
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ThreatResponse> getThreatById(@PathVariable Integer id) {
+        try {
+            Threat threat = threatService.findThreatById(id);
+            if (threat == null)
+                return ResponseEntity.notFound().build();
+
+            return ResponseEntity.ok(ThreatResponse.fromModel(threat));
+        } catch (Exception e) {
+            throw new ThreatException(
+                    ExceptionCodesRiskManagementDatabase.DB_RISK_MANAGEMENT_013, e.getMessage()
+            );
+        }
+    }
+
 
     @PostMapping
     public ResponseEntity<ThreatResponse> createThreat(@RequestBody @Valid Threat threat) {
