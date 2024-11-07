@@ -5,8 +5,10 @@ import com.riskmanagement.back_riskmanagement.dto.model.Control;
 import com.riskmanagement.back_riskmanagement.dto.request.ControlRequest;
 import com.riskmanagement.back_riskmanagement.dto.response.ControlResponse;
 import com.riskmanagement.back_riskmanagement.exception.codes.ExceptionCodesRiskManagementDatabase;
-import com.riskmanagement.back_riskmanagement.exception.riskmanagement.ControlException;
 import com.riskmanagement.back_riskmanagement.service.interfaces.ControlService;
+
+//import com.riskmanagement.back_riskmanagement.exception.riskmanagement.ControlException;
+//import com.riskmanagement.back_riskmanagement.service.interfaces.ControlService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -32,19 +34,7 @@ public class ControlController {
 
     @GetMapping() 
     public ResponseEntity<List<ControlResponse>> getAllControls() {
-        try {
-            List<ControlResponse> controls = controlService
-                    .findAll()
-                    .stream()
-                    .map(ControlResponse::fromModel)
-                    .toList();
-
-            return ResponseEntity.ok(controls);
-        }catch (Exception e){
-            throw new ControlException(
-                    ExceptionCodesRiskManagementDatabase.DB_RISK_MANAGEMENT_013, e.getMessage()  
-            );
-        }
+       return ResponseEntity.ok(controlService.findAll()); 
     }
 
     
