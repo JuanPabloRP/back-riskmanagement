@@ -86,4 +86,26 @@ public class ThreatController {
             );
         }
     }
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ThreatResponse> updateThreat(@PathVariable Integer id, @RequestBody @Valid Threat threat) {
+        try {
+            Threat updatedThreat = threatService.update(id, threat);
+            if (updatedThreat != null) {
+                ThreatResponse response = ThreatResponse.fromModel(updatedThreat);
+                return ResponseEntity.ok(response);
+
+            } else {
+                throw new ThreatException(
+                        ExceptionCodesRiskManagementDatabase.DB_RISK_MANAGEMENT_015,
+                        "Threat not found for update"
+                );
+            }
+        } catch (Exception e) {
+            throw new ThreatException(
+                    ExceptionCodesRiskManagementDatabase.DB_RISK_MANAGEMENT_015, e.getMessage()
+            );
+        }
+    }
 }
