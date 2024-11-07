@@ -67,9 +67,10 @@ public class ThreatServiceImpl implements ThreatService {
     public Threat delete(Integer id) {
         try {
             ThreatEntity threatEntity = threatRepository.findById(id).orElse(null);
-            if (threatEntity == null) {
+            if (threatEntity == null)
                 return null;
-            }
+
+
             threatRepository.deleteById(id);
             return Threat.fromEntity(threatEntity);
         } catch (Exception e) {
