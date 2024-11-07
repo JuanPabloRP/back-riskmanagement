@@ -6,6 +6,9 @@
 INSERT INTO status (status_name) VALUES ( 'Pendiente');
 INSERT INTO status (status_name) VALUES ( 'Aceptado');
 INSERT INTO status (status_name) VALUES ( 'Rechazado');
+INSERT INTO status (status_name) VALUES ( 'Creado');
+INSERT INTO status (status_name) VALUES ( 'En progreso');
+INSERT INTO status (status_name) VALUES ( 'Terminado');
 
 -- User role
 INSERT INTO role (role_name) VALUES ('Super Administrador');
