@@ -69,4 +69,21 @@ public class ThreatController {
             );
         }
     }
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteThreat(@PathVariable Integer id) {
+        try {
+            Threat deletedThreat = threatService.delete(id);
+
+            if (deletedThreat != null)
+                return ResponseEntity.noContent().build();
+            else
+                return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            throw new ThreatException(
+                    ExceptionCodesRiskManagementDatabase.DB_RISK_MANAGEMENT_015, e.getMessage()
+            );
+        }
+    }
 }
