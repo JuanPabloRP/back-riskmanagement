@@ -6,13 +6,13 @@ import com.riskmanagement.back_riskmanagement.dto.response.ThreatResponse;
 import com.riskmanagement.back_riskmanagement.exception.codes.ExceptionCodesRiskManagementDatabase;
 import com.riskmanagement.back_riskmanagement.exception.riskmanagement.ThreatException;
 import com.riskmanagement.back_riskmanagement.service.interfaces.ThreatService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 
@@ -37,6 +37,20 @@ public class ThreatController {
         } catch (Exception e) {
             throw new ThreatException(
                     ExceptionCodesRiskManagementDatabase.DB_RISK_MANAGEMENT_013, e.getMessage()
+            );
+        }
+    }
+
+
+    @PostMapping
+    public ResponseEntity<ThreatResponse> createThreat(@RequestBody @Valid Threat threat) {
+        try {
+            Threat createdThreat = threatService.create(threat);
+            ThreatResponse response = ThreatResponse.fromModel(createdThreat);
+            return ResponseEntity.status(201).body(response);
+        } catch (Exception e) {
+            throw new ThreatException(
+                    ExceptionCodesRiskManagementDatabase.DB_RISK_MANAGEMENT_014, e.getMessage()
             );
         }
     }
