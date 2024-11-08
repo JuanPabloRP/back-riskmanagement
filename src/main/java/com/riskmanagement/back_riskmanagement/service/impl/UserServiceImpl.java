@@ -22,6 +22,32 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findAll() {
+        return List.of();
+    }
+
+    @Override
+    public User findUserById(Integer id) {
+        return null;
+    }
+
+    @Override
+    public User create(User user) {
+        return null;
+    }
+
+    @Override
+    public User update(Integer id, User user) {
+        return null;
+    }
+
+    @Override
+    public User delete(Integer id) {
+        return null;
+    }
+
+    /*
+    @Override
+    public List<User> findAll() {
         if (userRepository.findAll().isEmpty()) {
             return List.of();
         }
@@ -65,6 +91,6 @@ public class UserServiceImpl implements UserService {
 
 
     }
-
+    */
 
 }
