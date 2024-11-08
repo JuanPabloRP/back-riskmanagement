@@ -15,34 +15,50 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = UserController.USER_URI, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = RiskController.RISK_URI, produces = MediaType.APPLICATION_JSON_VALUE)
 @ControllerAdvice
 @RequiredArgsConstructor
 public class RiskController {
-    public static final String USER_URI = "/api/v1/risk";
-    
-        @Autowired
-        RiskService RiskService;
+    public static final String RISK_URI = "/api/v1/risk";
 
-        @GetMapping()
-    public ResponseEntity<List<RiskResponse>> getAllRoles() {
-        try {
-            List<RiskResponse> risk = RiskService
-                    .findAll()
-                    .stream()
-                    .map(RiskResponse::fromModel)
-                    .toList();
+    @Autowired
+    private RiskService riskService;
 
-            return ResponseEntity.ok(risk);
-        }catch (Exception e){
+    @GetMapping
+    public ResponseEntity<List<RiskResponse>> getAllRisks() {
+        try{
+            return ResponseEntity.ok(riskService.getAllRisks());
+        }catch(Exception e){
             throw new RiskException(
                     ExceptionCodesRiskManagementDatabase.DB_RISK_MANAGEMENT_013, e.getMessage()
             );
         }
     }
 
-public class RiskController {
+    @GetMapping("/{id}")
+    public ResponseEntity<RiskResponse> getRiskById(@PathVariable Integer id) {
+        Risk risk = riskService.findRiskById(id);
+        RiskResponse riskResponse = RiskResponse.fromRisk(risk);
+        return ResponseEntity.ok(riskResponse);
+    }
 
-  
+    @PostMapping
+    public ResponseEntity<RiskResponse> createRisk(@RequestBody RiskRequest riskRequest) {
+        Risk risk = riskService.createRisk(Risk.fromRiskRequest(riskRequest));
+        RiskResponse riskResponse = RiskResponse.fromRisk(risk);
+        return ResponseEntity.ok(riskResponse);
+    }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<RiskResponse> updateRisk(@PathVariable Integer id, @RequestBody RiskRequest riskRequest) {
+        Risk risk = riskService.updateRisk(id, Risk.fromRiskRequest(riskRequest));
+        RiskResponse updatedRisk = RiskResponse.fromRisk(risk);
+        return ResponseEntity.ok(updatedRisk);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteRisk(@PathVariable Integer id) {
+        riskService.deleteRisk(id);
+        return ResponseEntity.noContent().build();
+    }
 }

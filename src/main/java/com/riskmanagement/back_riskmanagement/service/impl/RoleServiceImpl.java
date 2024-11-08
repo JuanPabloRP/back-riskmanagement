@@ -1,5 +1,6 @@
 package com.riskmanagement.back_riskmanagement.service.impl;
 
+import com.riskmanagement.back_riskmanagement.dto.model.Risk;
 import com.riskmanagement.back_riskmanagement.dto.model.Role;
 import com.riskmanagement.back_riskmanagement.entity.RoleEntity;
 import com.riskmanagement.back_riskmanagement.exception.codes.ExceptionCodesRiskManagementDatabase;
