@@ -1,8 +1,10 @@
 package com.riskmanagement.back_riskmanagement.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 
@@ -10,6 +12,8 @@ import java.sql.Date;
 @Table(name = "user_information")
 @Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,11 +35,11 @@ public class UserEntity extends BaseEntity {
     @Column(name = "birthDate")
     private Date birthDate;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "role_id", referencedColumnName = "role_id")
     private RoleEntity roleId;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "status_id", referencedColumnName = "status_id")
     private StatusEntity statusId;
 
