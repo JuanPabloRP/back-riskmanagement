@@ -3,7 +3,6 @@ package com.riskmanagement.back_riskmanagement.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDate;
 
 
