@@ -67,7 +67,8 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | ServletException e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error con AUTH: " + e.getMessage());
+            throw new ServletException("Error con AUTH: " + e.getMessage());
         }
     }
 
