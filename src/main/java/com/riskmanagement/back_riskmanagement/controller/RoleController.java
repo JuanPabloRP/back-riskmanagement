@@ -78,8 +78,7 @@ public class RoleController {
     @DeleteMapping("/{id}")
     public ResponseEntity<RoleResponse> deleteRole(@PathVariable Integer id){
         try{
-            Role role = roleService.delete(id);
-            return ResponseEntity.ok(RoleResponse.fromRole(role));
+            return ResponseEntity.ok(RoleResponse.fromRole(roleService.delete(id)));
         }catch (Exception e){
             throw new RoleException(ExceptionCodesRiskManagementDatabase.DB_RISK_MANAGEMENT_016, e.getMessage());
         }
