@@ -1,11 +1,14 @@
 package com.riskmanagement.back_riskmanagement.controller;
 
+import com.riskmanagement.back_riskmanagement.dto.request.UserRequest;
+import com.riskmanagement.back_riskmanagement.dto.response.UserResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import com.riskmanagement.back_riskmanagement.service.interfaces.AuthService;
 
 @RestController
 @RequestMapping(value = AuthController.AUTH_URI, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -15,5 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     public static final String AUTH_URI = "/api/v1/auth";
 
+    @Autowired
+    AuthService authService;
 
+    @PostMapping(value = "/signup")
+    public ResponseEntity<UserResponse> signup (@RequestBody UserRequest userRequest){
+        return ResponseEntity.ok(authService.signup(userRequest));
+    }
 }

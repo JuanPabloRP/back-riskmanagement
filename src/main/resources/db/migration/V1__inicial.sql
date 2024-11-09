@@ -14,22 +14,27 @@ CREATE TABLE role (
 CREATE TABLE status (
 	status_id SERIAL NOT NULL PRIMARY KEY,
 	status_name VARCHAR(50) NOT NULL UNIQUE,
-	description VARCHAR
+	active BOOLEAN NOT NULL DEFAULT TRUE,
+  creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  modification_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Tabla user_information
 CREATE TABLE user_information (
-	user_id SERIAL NOT NULL UNIQUE,
-	role_id INTEGER NOT NULL,
-	name VARCHAR NOT NULL,
-	password VARCHAR NOT NULL,  -- Contraseña almacenada como hash
-	status_id INTEGER NOT NULL,  -- Estado de aprobación
-	active BOOLEAN NOT NULL DEFAULT TRUE,
-	creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	modification_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	PRIMARY KEY(user_id),
-	FOREIGN KEY(role_id) REFERENCES role(role_id),
-	FOREIGN KEY(status_id) REFERENCES status(status_id)
+    user_id SERIAL NOT NULL UNIQUE,
+    role_id INTEGER NOT NULL,
+    identification VARCHAR NOT NULL,
+    email VARCHAR NOT NULL UNIQUE,
+    birth_date DATE,
+    name VARCHAR NOT NULL,
+    password VARCHAR NOT NULL,
+    status_id INTEGER NOT NULL,
+    active BOOLEAN NOT NULL DEFAULT TRUE,
+    creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    modification_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY(user_id),
+    FOREIGN KEY(role_id) REFERENCES role(role_id),
+    FOREIGN KEY(status_id) REFERENCES status(status_id)
 );
 
 -- Tabla user_information_history para auditoría de cambios
@@ -119,12 +124,15 @@ CREATE TABLE control (
 	control_name VARCHAR NOT NULL,
 	control_type VARCHAR NOT NULL,
 	control_description VARCHAR NOT NULL,
+	status_id INTEGER,
 	active BOOLEAN NOT NULL DEFAULT TRUE,
 	creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	modification_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY(control_id),
-	FOREIGN KEY(user_id) REFERENCES user_information(user_id)
+	FOREIGN KEY(user_id) REFERENCES user_information(user_id),
+	FOREIGN KEY(status_id) REFERENCES status(status_id)
 );
+
 
 -- Tabla treatment_plan
 CREATE TABLE treatment_plan (
