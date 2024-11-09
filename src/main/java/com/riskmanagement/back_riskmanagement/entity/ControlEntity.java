@@ -7,6 +7,8 @@ import lombok.*;
 @Table(name = "control")
 @Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ControlEntity extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,13 +1,9 @@
 package com.riskmanagement.back_riskmanagement.dto.model;
 import com.riskmanagement.back_riskmanagement.dto.request.ControlRequest;
-import com.riskmanagement.back_riskmanagement.dto.request.ControlRequest;
 import com.riskmanagement.back_riskmanagement.dto.response.ControlResponse;
 import com.riskmanagement.back_riskmanagement.entity.ControlEntity;
-import com.riskmanagement.back_riskmanagement.entity.RoleEntity;
 import com.riskmanagement.back_riskmanagement.entity.StatusEntity;
 import com.riskmanagement.back_riskmanagement.entity.UserEntity;
-import com.riskmanagement.back_riskmanagement.entity.ControlEntity;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
