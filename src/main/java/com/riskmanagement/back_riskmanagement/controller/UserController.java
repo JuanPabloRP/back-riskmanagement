@@ -22,7 +22,7 @@ public class UserController {
     public static final String USER_URI = "/api/v1/user";
 
     @Autowired
-    private final UserService userService;
+    UserService userService;
 
     @GetMapping()
     public ResponseEntity<List<UserResponse>> getAllUsers() {
