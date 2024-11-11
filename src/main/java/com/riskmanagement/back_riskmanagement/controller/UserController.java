@@ -24,6 +24,7 @@ public class UserController {
     @Autowired
     UserService userService;
 
+
     @GetMapping()
     public ResponseEntity<List<UserResponse>> getAllUsers() {
 

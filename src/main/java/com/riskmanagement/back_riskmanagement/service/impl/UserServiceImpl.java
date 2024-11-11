@@ -68,8 +68,6 @@ public class UserServiceImpl implements UserService {
         User user1 = User.toModel(userRequest);
         UserEntity updatedEntity = User.toEntity(user1, role,status);
 
-
-        // Guardar la nueva instancia en el repositorio
         updatedEntity = userRepository.save(updatedEntity);
 
         User userUpdated = User.toModel(updatedEntity);
