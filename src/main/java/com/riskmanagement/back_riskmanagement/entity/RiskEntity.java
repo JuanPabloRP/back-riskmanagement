@@ -1,24 +1,21 @@
 package com.riskmanagement.back_riskmanagement.entity;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "role")
+@Table (name = "risk")
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RoleEntity extends BaseEntity {
+public class RiskEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "role_id")
-    private Integer id;
+    @Column(name = "risk_id")
+    private Integer riskId;
 
-    @Column(name = "role_name", unique = true)
+    @Column(name = "risk_name", unique = true)
     @Setter
-    private String name;
-
-
+    private String riskName;
 }

@@ -20,69 +20,33 @@ import java.util.List;
 @ControllerAdvice
 @RequiredArgsConstructor
 public class RoleController {
-    public static final String ROLE_URI = "/api/v1/roles";
+    public static final String ROLE_URI = "/api/v1/role";
 
     @Autowired
     RoleService roleService;
 
     @GetMapping()
     public ResponseEntity<List<RoleResponse>> getAllRoles() {
-        try {
-            List<RoleResponse> roles = roleService
-                    .findAll()
-                    .stream()
-                    .map(RoleResponse::fromModel)
-                    .toList();
-
-            return ResponseEntity.ok(roles);
-        }catch (Exception e){
-            throw new RoleException(
-                    ExceptionCodesRiskManagementDatabase.DB_RISK_MANAGEMENT_013, e.getMessage()
-            );
-        }
+        return ResponseEntity.ok(roleService.findAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<RoleResponse> getRoleById(@PathVariable Integer id){
-        try{
-            Role role = roleService.findRoleById(id);
-            RoleResponse roleResponse = RoleResponse.fromRole(role);
-            return ResponseEntity.ok(roleResponse);
-        }catch (Exception e){
-            throw new RoleException(ExceptionCodesRiskManagementDatabase.DB_RISK_MANAGEMENT_017, e.getMessage());
-        }
+            return ResponseEntity.ok(roleService.findRoleById(id));
     }
 
     @PostMapping()
     public ResponseEntity<RoleResponse> createRole(@RequestBody RoleRequest roleRequest){
-        try{
-            Role role = roleService.create(Role.fromRoleRequest(roleRequest));
-            RoleResponse roleResponse = RoleResponse.fromRole(role);
-            return ResponseEntity.ok(roleResponse);
-        }catch (Exception e){
-            throw new RoleException(ExceptionCodesRiskManagementDatabase.DB_RISK_MANAGEMENT_014, e.getMessage());
-        }
+        return ResponseEntity.ok(roleService.create(roleRequest));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<RoleResponse> updateRole(@PathVariable Integer id, @RequestBody RoleRequest roleRequest){
-        try{
-            Role role = roleService.update(id, Role.fromRoleRequest(roleRequest));
-            RoleResponse roleResponse = RoleResponse.fromRole(role);
-            return ResponseEntity.ok(roleResponse);
-        }catch (Exception e){
-            throw new RoleException(ExceptionCodesRiskManagementDatabase.DB_RISK_MANAGEMENT_015, e.getMessage());
-        }
+        return ResponseEntity.ok(roleService.update(id, roleRequest));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<RoleResponse> deleteRole(@PathVariable Integer id){
-        try{
-            Role role = roleService.delete(id);
-            RoleResponse roleResponse = RoleResponse.fromRole(role);
-            return ResponseEntity.ok(roleResponse);
-        }catch (Exception e){
-            throw new RoleException(ExceptionCodesRiskManagementDatabase.DB_RISK_MANAGEMENT_016, e.getMessage());
-        }
+        return ResponseEntity.ok(roleService.delete(id));
     }
 }
