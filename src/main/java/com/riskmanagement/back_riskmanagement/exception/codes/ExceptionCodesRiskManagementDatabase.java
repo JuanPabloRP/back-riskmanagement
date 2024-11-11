@@ -27,6 +27,14 @@ public enum ExceptionCodesRiskManagementDatabase {
     DB_RISK_MANAGEMENT_016( "Error al eliminar un rol"),
     DB_RISK_MANAGEMENT_017( "Error al obtener la información de un rol"),
 
+    //Errores para los controles que vienen de la base de datos
+    DB_RISK_MANAGEMENT_018( "Error al crear la tabla de controles"),
+    DB_RISK_MANAGEMENT_019("Error al consultar los controles"),
+    DB_RISK_MANAGEMENT_020( "Error al crear un controles"),
+    DB_RISK_MANAGEMENT_021( "Error al modificar un controles"),
+    DB_RISK_MANAGEMENT_022( "Error al eliminar un controles"),
+    DB_RISK_MANAGEMENT_023( "Error al obtener la información de un control"),
+
 
 
     ;

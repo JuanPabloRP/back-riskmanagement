@@ -11,7 +11,7 @@ public class GlobalExceptionHandler {
 
     // Manejo de excepciones personalizadas (de cada módulo), con su respectivo mensaje
     // TODO: agregar las que hacen falta :)
-    @ExceptionHandler({ UserException.class, RoleException.class })
+    @ExceptionHandler({ UserException.class, RoleException.class, ControlException.class })
     public ResponseEntity<String> handleCustomExceptions(RuntimeException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }

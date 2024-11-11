@@ -1,6 +1,10 @@
 package com.riskmanagement.back_riskmanagement.service.impl;
 
+
 import com.riskmanagement.back_riskmanagement.dto.model.Role;
+import com.riskmanagement.back_riskmanagement.dto.model.User;
+import com.riskmanagement.back_riskmanagement.dto.request.RoleRequest;
+import com.riskmanagement.back_riskmanagement.dto.response.RoleResponse;
 import com.riskmanagement.back_riskmanagement.entity.RoleEntity;
 import com.riskmanagement.back_riskmanagement.exception.codes.ExceptionCodesRiskManagementDatabase;
 import com.riskmanagement.back_riskmanagement.exception.riskmanagement.RoleException;
@@ -18,53 +22,53 @@ public class RoleServiceImpl implements RoleService {
     private final RoleRepository roleRepository;
 
     @Override
-    public List<Role> findAll() {
-        if (roleRepository.findAll().isEmpty()) {
-            return List.of();
+    public List<RoleResponse> findAll() {
+        List<Role> roles = roleRepository.findAll().stream().map(Role::toModel).toList();
+        return roles.stream().map(Role::toResponse).toList();
+    }
+
+    @Override
+    public RoleResponse findRoleById(Integer id) {
+        Role role = roleRepository
+                .findById(id)
+                .map(Role::toModel)
+                .orElseThrow(() ->
+                        new RoleException(ExceptionCodesRiskManagementDatabase.DB_RISK_MANAGEMENT_017, null)
+                );
+
+        return Role.toResponse(role);
+    }
+
+    @Override
+    public RoleResponse create(RoleRequest roleRequest) {
+        Role role = Role.toModel(roleRequest);
+        Role roleCreated = Role.toModel(roleRepository.save(Role.toEntity(role)));
+        return Role.toResponse(roleCreated);
+    }
+
+    @Override
+    public RoleResponse update(Integer id, RoleRequest roleRequest) {
+        RoleEntity roleEntity = roleRepository.findById(id)
+                .orElseThrow(() -> new RoleException(ExceptionCodesRiskManagementDatabase.DB_RISK_MANAGEMENT_017, null));
+
+        if (roleRequest.getName() != null) {
+            roleEntity.setName(roleRequest.getName());
         }
 
-        return roleRepository
-                .findAll()
-                .stream()
-                .map(Role::fromEntity)
-                .toList();
+        roleRepository.save(roleEntity);
+
+        return Role.toResponse(Role.toModel(roleEntity));
     }
 
     @Override
-    public Role findRoleById(Integer id) {
-        return roleRepository.findById(id)
-                .map(Role::fromEntity)
-                .orElse(null);
-    }
-
-    @Override
-    public Role create(Role role) {
-        RoleEntity roleEntity = roleRepository.save(Role.toEntity(role));
-        return Role.fromEntity(roleEntity);
-    }
-
-    @Override
-    public Role update(Integer id, Role role) {
-        RoleEntity roleEntity = roleRepository.findById(id).orElse(null);
-        if(roleEntity != null){
-            roleEntity.setRoleName(role.getRoleName());
-            roleRepository.save(roleEntity);
-        }
-        return roleEntity != null ?  Role.fromEntity(roleEntity) : null;
-    }
-
-    @Override
-    public Role delete(Integer id) {
-        try{
-            RoleEntity roleEntity = roleRepository.findById(id).orElse(null);
-            if(roleEntity == null){
-                return null;
-            }
-            roleRepository.deleteById(id);
-            return Role.fromEntity(roleEntity);
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-            throw new RoleException(ExceptionCodesRiskManagementDatabase.DB_RISK_MANAGEMENT_016, e.getMessage());
-        }
+    public RoleResponse delete(Integer id) {
+        Role role = roleRepository
+                .findById(id)
+                .map(Role::toModel)
+                .orElseThrow(() ->
+                        new RoleException(ExceptionCodesRiskManagementDatabase.DB_RISK_MANAGEMENT_017, null)
+                );
+        roleRepository.deleteById(id);
+        return Role.toResponse(role);
     }
 }
