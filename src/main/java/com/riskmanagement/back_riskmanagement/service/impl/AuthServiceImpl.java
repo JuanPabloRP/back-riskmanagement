@@ -6,6 +6,8 @@ import com.riskmanagement.back_riskmanagement.dto.response.UserResponse;
 import com.riskmanagement.back_riskmanagement.entity.RoleEntity;
 import com.riskmanagement.back_riskmanagement.entity.StatusEntity;
 import com.riskmanagement.back_riskmanagement.entity.UserEntity;
+import com.riskmanagement.back_riskmanagement.exception.codes.ExceptionCodesRiskManagementDatabase;
+import com.riskmanagement.back_riskmanagement.exception.riskmanagement.UserException;
 import com.riskmanagement.back_riskmanagement.repository.RoleRepository;
 import com.riskmanagement.back_riskmanagement.repository.StatusRepository;
 import com.riskmanagement.back_riskmanagement.repository.UserRepository;
@@ -29,20 +31,23 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public UserResponse signup(UserRequest userRequest) {
+        try{
+            User userToCreate = User.toModel(userRequest);
 
-        User userToCreate = User.toModel(userRequest);
+            RoleEntity role = roleRepository.findById(userToCreate.getRoleId())
+                    .orElseThrow(() -> new EntityNotFoundException("Role no encontrado"));
+            StatusEntity status = statusRepository.findById(userToCreate.getStatusId())
+                    .orElseThrow(() -> new EntityNotFoundException("Status no encontrado"));
 
-        RoleEntity role = roleRepository.findById(userToCreate.getRoleId())
-                .orElseThrow(() -> new EntityNotFoundException("Role no encontrado"));
-        StatusEntity status = statusRepository.findById(userToCreate.getStatusId())
-                .orElseThrow(() -> new EntityNotFoundException("Status no encontrado"));
+            UserEntity userEntity =  User.toEntity(userToCreate, role, status);
 
-        UserEntity userEntity =  User.toEntity(userToCreate, role, status);
+            UserEntity savedEntity = userRepository.save(userEntity);
 
-        UserEntity savedEntity = userRepository.save(userEntity);
+            User userCreated = User.toModel(savedEntity);
 
-        User userCreated = User.toModel(savedEntity);
-
-        return User.toResponse(userCreated, role.getName(), status.getStatusName());
+            return User.toResponse(userCreated, role.getName(), status.getStatusName());
+        }catch (Exception e){
+           throw new UserException(ExceptionCodesRiskManagementDatabase.DB_RISK_MANAGEMENT_008, null);
+        }
     }
 }
