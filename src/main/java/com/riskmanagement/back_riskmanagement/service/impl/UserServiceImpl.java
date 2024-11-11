@@ -31,12 +31,12 @@ public class UserServiceImpl implements UserService {
     public List<UserResponse> findAll() {
         return userRepository.findAll().stream()
                 .map(userEntity -> {
-                    RoleEntity role = roleRepository.findById(userEntity.getRoleId().getRoleId())
+                    RoleEntity role = roleRepository.findById(userEntity.getRoleId().getId())
                             .orElseThrow(() -> new EntityNotFoundException("Role no encontrado"));
                     StatusEntity status = statusRepository.findById(userEntity.getStatusId().getStatusId())
                             .orElseThrow(() -> new EntityNotFoundException("Status no encontrado"));
                     User user = User.toModel(userEntity);
-                    return User.toResponse(user, role.getRoleName(), status.getStatusName());
+                    return User.toResponse(user, role.getName(), status.getStatusName());
                 })
                 .collect(Collectors.toList());
     }
@@ -46,13 +46,13 @@ public class UserServiceImpl implements UserService {
         UserEntity userEntity = userRepository.findById(id)
                 .orElseThrow(() -> new UserException(ExceptionCodesRiskManagementDatabase.DB_RISK_MANAGEMENT_008, "Usuario no encontrado"));
 
-        RoleEntity role = roleRepository.findById(userEntity.getRoleId().getRoleId())
+        RoleEntity role = roleRepository.findById(userEntity.getRoleId().getId())
                 .orElseThrow(() -> new EntityNotFoundException("Role no encontrado"));
         StatusEntity status = statusRepository.findById(userEntity.getStatusId().getStatusId())
                 .orElseThrow(() -> new EntityNotFoundException("Status no encontrado"));
 
         User user = User.toModel(userEntity);
-        return User.toResponse(user, role.getRoleName(), status.getStatusName());
+        return User.toResponse(user, role.getName(), status.getStatusName());
     }
 
     @Override
@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
         updatedEntity = userRepository.save(updatedEntity);
 
         User userUpdated = User.toModel(updatedEntity);
-        return User.toResponse(userUpdated, role.getRoleName(), status.getStatusName());
+        return User.toResponse(userUpdated, role.getName(), status.getStatusName());
     }
 
 
@@ -87,6 +87,6 @@ public class UserServiceImpl implements UserService {
         RoleEntity role = userEntity.getRoleId();
         StatusEntity status = userEntity.getStatusId();
         User userDeleted = User.toModel(userEntity);
-        return User.toResponse(userDeleted, role.getRoleName(), status.getStatusName());
+        return User.toResponse(userDeleted, role.getName(), status.getStatusName());
     }
 }

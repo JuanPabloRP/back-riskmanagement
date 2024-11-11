@@ -1,9 +1,8 @@
 package com.riskmanagement.back_riskmanagement.dto.model;
 
 import com.riskmanagement.back_riskmanagement.dto.request.RoleRequest;
-import com.riskmanagement.back_riskmanagement.dto.request.UserRequest;
+import com.riskmanagement.back_riskmanagement.dto.response.RoleResponse;
 import com.riskmanagement.back_riskmanagement.entity.RoleEntity;
-import com.riskmanagement.back_riskmanagement.entity.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,28 +13,37 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder(toBuilder = true)
 public class Role {
-    private String roleId;
-    private String roleName;
+    private String id;
+    private String name;
 
-    public static Role fromEntity(RoleEntity roleEntity){
-        return Role
-                .builder()
-                .roleId(roleEntity.getRoleId().toString())
-                .roleName(roleEntity.getRoleName())
+
+    // De RoleRequest a Role
+    public static Role toModel(RoleRequest request) {
+        return Role.builder()
+                .name(request.getName())
                 .build();
     }
 
-    public static RoleEntity toEntity(Role role){
-        return RoleEntity
-                .builder()
-                .roleName(role.getRoleName())
+    // De RoleEntity a Role
+    public static Role toModel(RoleEntity entity) {
+        return Role.builder()
+                .id(entity.getId().toString())
+                .name(entity.getName())
                 .build();
     }
 
-    public static Role fromRoleRequest(RoleRequest roleRequest){
-        return Role
-                .builder()
-                .roleName(roleRequest.getRoleName())
+    // De Role a RoleEntity
+    public static RoleEntity toEntity(Role model) {
+        return RoleEntity.builder()
+                .name(model.getName())
+                .build();
+    }
+
+    // De Role a RoleResponse
+    public static RoleResponse toResponse(Role model) {
+        return RoleResponse.builder()
+                .id(model.getId())
+                .name(model.getName())
                 .build();
     }
 }
