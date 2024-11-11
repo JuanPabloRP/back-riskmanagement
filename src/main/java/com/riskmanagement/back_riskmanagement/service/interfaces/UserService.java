@@ -7,9 +7,8 @@ import com.riskmanagement.back_riskmanagement.dto.response.UserResponse;
 import java.util.List;
 
 public interface UserService {
-    List<User> findAll();
-    User findUserById(Integer id);
-    User create(User user);
-    User update(Integer id,User user);
-    User delete(Integer id);
+    List<UserResponse> findAll();
+    UserResponse findUserById(Integer id);
+    UserResponse update(Integer id, UserRequest userRequest);
+    UserResponse delete(Integer id);
 }
