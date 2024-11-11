@@ -49,7 +49,7 @@ public class User {
                 .email(entity.getEmail())
                 .identification(entity.getIdentification())
                 .birthDate(entity.getBirthDate())
-                .roleId(entity.getRoleId().getRoleId())
+                .roleId(entity.getRoleId().getId())
                 .statusId(entity.getStatusId().getStatusId())
                 .build();
     }

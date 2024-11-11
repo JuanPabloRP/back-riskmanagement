@@ -43,6 +43,6 @@ public class AuthServiceImpl implements AuthService {
 
         User userCreated = User.toModel(savedEntity);
 
-        return User.toResponse(userCreated, role.getRoleName(), status.getStatusName());
+        return User.toResponse(userCreated, role.getName(), status.getStatusName());
     }
 }
