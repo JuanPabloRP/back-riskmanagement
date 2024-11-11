@@ -36,7 +36,13 @@ public enum ExceptionCodesRiskManagementDatabase {
     DB_RISK_MANAGEMENT_023( "Error al obtener la información de un control"),
 
 
-
+    //Plan de tratamiento
+    DB_RISK_MANAGEMENT_018( "Error al listar plan de tratamiento"),
+    DB_RISK_MANAGEMENT_019("Error al listar plan por Id"),
+    DB_RISK_MANAGEMENT_020( "Error al crear plan"),
+    DB_RISK_MANAGEMENT_021( "Error al actualizar plan"),
+    DB_RISK_MANAGEMENT_022( "Error al eliminar plan"),
+    DB_RISK_MANAGEMENT_023( "Error al listar riesgos"),
     ;
 
 
