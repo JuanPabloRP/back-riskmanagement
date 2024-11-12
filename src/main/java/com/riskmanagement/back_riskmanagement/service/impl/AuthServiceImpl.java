@@ -50,4 +50,10 @@ public class AuthServiceImpl implements AuthService {
            throw new UserException(ExceptionCodesRiskManagementDatabase.DB_RISK_MANAGEMENT_008, null);
         }
     }
+
+    @Override
+    public String generateToken(UserRequest userRequest) {
+
+        return null;
+    }
 }

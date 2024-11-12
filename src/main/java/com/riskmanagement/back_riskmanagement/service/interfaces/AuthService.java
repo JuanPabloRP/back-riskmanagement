@@ -6,5 +6,6 @@ import com.riskmanagement.back_riskmanagement.dto.response.UserResponse;
 
 public interface AuthService {
     UserResponse signup(UserRequest userRequest);
+    String generateToken(UserRequest userRequest);
 
 }
